@@ -1,16 +1,20 @@
+/*
+    Código fuente - Práctica 2 - Arquitectura de Computadores y Ensambladores 1
+    Grupo:  07
+    Integrantes:
+        - Alvaro Norberto García Meza 202109567
+        - Damián Ignacio Peña Afre 202110568
+        - Daniel Estuardo Cuque Ruíz 202112145
+        - José Manuel Ibarra Pirir 202001800
+*/
+
 #include <LiquidCrystal.h>
 
-
-LiquidCrystal lcd(7, 6, 5, 4, 3, 2);	// pines RS, E, D4, D5, D6, D7 de modulo 1602A
+#include "Menu.h"
 
 void setup() {
-  lcd.begin(16, 2);			// inicializa a display de 16 columnas y 2 lineas
 }
 
 void loop() {
-  lcd.setCursor(0, 0);			// ubica cursor en columna 0, linea 0
-  lcd.print("Hola, han pasado");	// escribe el texto en pantalla
-  lcd.setCursor(0, 1);			// ubica cursor en columna 0, linea 1
-  lcd.print(millis() / 1000);		// escribe valor en segundos devuelto por funcion millis()
-  lcd.print(" seg.");			// imprime a continuacion segundos
+
 }
