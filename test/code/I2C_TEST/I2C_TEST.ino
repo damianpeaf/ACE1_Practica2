@@ -1,24 +1,22 @@
 #include <Wire.h> 
+byte CODE; // This is the point to traslated messages
 
 void setup() {
   // put your setup code here, to run once:
-  Wire.begin(); // Start the communication
-
+  Wire.begin(); // Start the communication, here is the master
+  Serial.begin(9600);
+  Serial.println("From Master, and the I2C was set");
 }
-byte pin[] = {2,3,4,5,6};
-byte state = 0;
 
-void slave(){
-  for(int i = 0; i< 5; ii+){
-    //
-    Wire.beginTransmission(123); // this is the address of the slave
-    Wire.write(pin[i]); // write in the pin of the slave
-    Wire.write(state); // send data
-    Wire.endTransmission(); // Stop transmission
-    delay(1000);
-  }
-}
 void loop() {
   // put your main code here, to run repeatedly:
-  slave();
+  String STRING = "";
+
+  // Request data from the slave 
+  Wire.requestFrom(0x01,1); // From the slave address, only 1 data transfer, this may vary
+  while(Wire.available()){ // While both arduino's are connected...
+    CODE = Wire.read(); // read the code that is being transferred
+  }
+  
+  Serial.println("From the slave the value of the pot is " + CODE);
 }
