@@ -33,27 +33,42 @@ void init_sequence(){
 
     int right_distance = get_right_distance();
 
-    if(right_distance <= 13){
+    if(right_distance <= 12){
 
         Serial.print("OBJECT DETECTED");
 
         package_aligment_time = millis();
         move_motor();
-        while (millis() - package_aligment_time <  300) {}
+        while (millis() - package_aligment_time <  200) {}
 
         stop_motor();
         Serial.println("MOTOR STOP !!!");
 
         stop_motor_time = millis();
+        reset_color_probabilities();
         while (millis() - stop_motor_time <  5000) {
-            // DETECT COLOR
             color_sequence();
         }
 
-        package_aligment_time = millis();
+        int color = resultant_color();
+
+        if(color == 1){
+            Serial.println("RED");
+        } else if(color == 2){
+            Serial.println("YELLOW");
+        } else if(color == 3){
+            Serial.println("BLUE");
+        }else{
+            Serial.println("NO COLOR");
+        }
+
         move_motor();
-        while (millis() - package_aligment_time <  3000) {}
-        // TODO: left ultrasonic sensor
+        if(color != 0){
+            delay(1000);
+            // TODO: left ultrasonic sensor
+        }else{
+            delay(100);
+        }
     }
 
 
@@ -63,8 +78,6 @@ void init_sequence(){
 
 void loop() {
 
-
-    // if(red_frequency <= 350 || green_frequency <= 350 || blue_frequency <= 350) {
     init_sequence();
 
 }

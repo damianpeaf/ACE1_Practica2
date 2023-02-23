@@ -19,10 +19,5 @@ int get_right_distance(){
     t = pulseIn(RIGHT_ULTRASONIC_ECHO, HIGH);
     d = t/59;
 
-    Serial.print("Distancia desde la DERECHA: ");
-    Serial.print(d);      
-    Serial.print("cm");
-    Serial.println();
-
     return d;
 }

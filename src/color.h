@@ -14,8 +14,15 @@ extern int red_frequency;
 extern int green_frequency;
 extern int blue_frequency;
 
+extern int red_probability;
+extern int yellow_probability;
+extern int blue_probability;
 
 void color_setup();
 void color_sequence();
+
+void reset_color_probabilities();
+
+int resultant_color();
 
 #endif
