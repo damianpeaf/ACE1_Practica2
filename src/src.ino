@@ -11,10 +11,13 @@
 #include <LiquidCrystal.h>
 
 #include "Menu.h"
+#include "Wire.h" 
 #include "motors.h"
 #include "color.h"
 #include "ultrasonic.h"
-
+// ESCLAVO
+byte entra =0;
+byte CODE;
 
 unsigned long package_aligment_time = 0;
 unsigned long stop_motor_time = 0;
@@ -24,11 +27,14 @@ int realigment_tries = 0;
 void setup() {
     Serial.begin(9600);
 
-    ultrasonic_setup();
-    color_setup();
-    motor_setup();
-    move_motor();
-
+  ultrasonic_setup();
+  color_setup();
+  motor_setup();
+  move_motor();
+  // ESCLAVO
+  Wire.begin(0x01);
+  Wire.onReceive(EntradaSolicitud);
+  Wire.onRequest(Peticion);
 }
 
 void color_detection(){
@@ -92,6 +98,8 @@ void init_sequence(){
             }
             // TODO: Servo
             Serial.println("Color: " + String(color) + " Width: " + String(width));
+            // CAMBIAR CODE
+            CODE = color;
             
         }else{
             // NOT RECOGNIZED PACKAGE
@@ -109,6 +117,22 @@ void init_sequence(){
 }
 
 void loop() {
+  init_sequence();
+}
 
-    init_sequence();
+//-------EVENTO DE ENTRADA--- ENVIADO POR EL MAESTRO---
+void EntradaSolicitud(int re )
+{
+while (Wire.available())
+{
+ entra= Wire.read();
+
+}
+ Serial.println(entra);
+
+}
+//-----EVENTO DE PETICIÓN--- SOLICITADO POR EL MAESTRO---
+void Peticion()
+{
+ Wire.write(CODE);
 }
