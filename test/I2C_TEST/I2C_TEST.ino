@@ -9,6 +9,10 @@ void setup()
   Wire.begin();
    // preguntar al esclavo
 
+    int value = 20;
+    Wire.beginTransmission(0x01);
+    Wire.write(value);
+    Wire.endTransmission();
 }
 
 void loop()
@@ -19,5 +23,12 @@ void loop()
   while(Wire.available()){
     CODE = Wire.read();
   }
-  Serial.println(CODE);
+
+  if(CODE != 0){
+    Serial.println(CODE);
+    Wire.beginTransmission(0x01);
+    Wire.write(1);
+    Wire.endTransmission();
+  }
+
 }

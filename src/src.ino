@@ -25,7 +25,7 @@ int posible_package_count_right = 0;
 int realigment_tries = 0;
 
 void setup() {
-    Serial.begin(9600);
+  Serial.begin(9600);
 
   ultrasonic_setup();
   color_setup();
@@ -99,8 +99,9 @@ void init_sequence(){
             // TODO: Servo
             Serial.println("Color: " + String(color) + " Width: " + String(width));
             // CAMBIAR CODE
+            Serial.println("CAMBIAR CODE");
             CODE = color;
-            
+
         }else{
             // NOT RECOGNIZED PACKAGE
             Serial.println("NOT RECOGNIZED PACKAGE");
@@ -121,18 +122,23 @@ void loop() {
 }
 
 //-------EVENTO DE ENTRADA--- ENVIADO POR EL MAESTRO---
-void EntradaSolicitud(int re )
+void EntradaSolicitud()
 {
-while (Wire.available())
-{
+while (Wire.available()){
  entra= Wire.read();
-
 }
- Serial.println(entra);
+
+ if(entra == 1){
+    // RESET PACKAGE DETECTION
+    CODE = 0;
+ }
 
 }
 //-----EVENTO DE PETICIÓN--- SOLICITADO POR EL MAESTRO---
 void Peticion()
 {
- Wire.write(CODE);
+    if(CODE != 0){
+        Serial.println("ENVIO DE COLOR " + String(CODE));
+    }
+    Wire.write(CODE);
 }
