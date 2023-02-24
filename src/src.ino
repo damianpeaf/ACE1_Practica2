@@ -1,3 +1,4 @@
+// ----- SLAVE ----- //
 /*
     Código fuente - Práctica 2 - Arquitectura de Computadores y Ensambladores 1
     Grupo:  07
@@ -15,26 +16,37 @@
 #include "motors.h"
 #include "color.h"
 #include "ultrasonic.h"
-// ESCLAVO
-byte entra =0;
-byte CODE;
 
+// INTERRUPT
+#define interrupt_signal_pin 0
+
+// Package props
+byte package_color;
+byte package_width;
+byte package_height;
+byte package_length;
+
+// Package detection
 unsigned long package_aligment_time = 0;
 unsigned long stop_motor_time = 0;
 int posible_package_count_right = 0;
 int realigment_tries = 0;
 
 void setup() {
-  Serial.begin(9600);
+    Serial.begin(9600);
 
-  ultrasonic_setup();
-  color_setup();
-  motor_setup();
-  move_motor();
-  // ESCLAVO
-  Wire.begin(0x01);
-  Wire.onReceive(EntradaSolicitud);
-  Wire.onRequest(Peticion);
+    ultrasonic_setup();
+    color_setup();
+    motor_setup();
+    move_motor();
+
+    // ESCLAVO
+    Wire.begin(0x01);
+    Wire.onRequest(send_package_info);
+
+    // INTERRUPT
+    pinMode(interrupt_signal_pin, OUTPUT);
+    digitalWrite(interrupt_signal_pin, LOW);
 }
 
 void color_detection(){
@@ -97,10 +109,20 @@ void init_sequence(){
                 width = 2;
             }
             // TODO: Servo
+
             Serial.println("Color: " + String(color) + " Width: " + String(width));
-            // CAMBIAR CODE
-            Serial.println("CAMBIAR CODE");
-            CODE = color;
+            
+            package_color = color;
+            package_width = width;
+            package_height = 10;
+            package_length = 20;
+            
+            // Send interrupt signal
+            Serial.println("INTERRUPT SIGNAL");
+            digitalWrite(interrupt_signal_pin, HIGH);
+            delay(10);
+            digitalWrite(interrupt_signal_pin, LOW);
+
 
         }else{
             // NOT RECOGNIZED PACKAGE
@@ -121,24 +143,11 @@ void loop() {
   init_sequence();
 }
 
-//-------EVENTO DE ENTRADA--- ENVIADO POR EL MAESTRO---
-void EntradaSolicitud()
+void send_package_info()
 {
-while (Wire.available()){
- entra= Wire.read();
-}
-
- if(entra == 1){
-    // RESET PACKAGE DETECTION
-    CODE = 0;
- }
-
-}
-//-----EVENTO DE PETICIÓN--- SOLICITADO POR EL MAESTRO---
-void Peticion()
-{
-    if(CODE != 0){
-        Serial.println("ENVIO DE COLOR " + String(CODE));
-    }
-    Wire.write(CODE);
+    Serial.println("SOLICITUD DE DATO");
+    Wire.write(package_color);
+    Wire.write(package_width);
+    Wire.write(package_height);
+    Wire.write(package_length);
 }
