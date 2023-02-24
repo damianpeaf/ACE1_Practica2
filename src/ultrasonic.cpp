@@ -25,7 +25,7 @@ int get_right_distance(){
     return d;
 }
 
-int get_left_distance(){
+int get_above_distance(){
     long t; 
     long d;
     digitalWrite(LEFT_ULTRASONIC_TRIG, HIGH);

@@ -51,19 +51,19 @@ void color_sequence() {
     // Serial.println();
 
     // AMARILLO 
-    if (red_frequency >= 107 && red_frequency <= 175
-    &&  green_frequency >= 165 && green_frequency <=235
-    &&  blue_frequency >=229 && blue_frequency <= 318)  yellow_probability++;
+    if (red_frequency >= 105 && red_frequency <= 177
+    &&  green_frequency >= 149 && green_frequency <=235
+    &&  blue_frequency >=171 && blue_frequency <= 308)  yellow_probability++;
     
     // ROJO 
-    if (red_frequency >= 162 && red_frequency <= 283
-    &&  green_frequency >= 150 && green_frequency <=518
-    &&  blue_frequency >=246 && blue_frequency <= 365)  red_probability++;
+    if (red_frequency >= 159 && red_frequency <= 288
+    &&  green_frequency >= 150 && green_frequency <=440
+    &&  blue_frequency >=236 && blue_frequency <= 375)  red_probability++;
     
     // Azul 
-    if (red_frequency >= 164 && red_frequency <= 260
-    &&  green_frequency >= 87 && green_frequency <=311
-    &&  blue_frequency >=97 && blue_frequency <= 147)  blue_probability++;
+    if (red_frequency >= 164 && red_frequency <= 265
+    &&  green_frequency >= 170 && green_frequency <=245
+    &&  blue_frequency >=95 && blue_frequency <= 150)  blue_probability++;
 
     delay(200);
 }

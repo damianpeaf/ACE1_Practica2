@@ -18,6 +18,6 @@ void ultrasonic_setup();
 
 int get_right_distance();
 
-int get_left_distance();
+int get_above_distance();
 
 #endif

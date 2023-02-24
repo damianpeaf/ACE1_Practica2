@@ -5,6 +5,7 @@
 //MAESTRO
 byte CODE;
 byte respuesta;
+int not_recognized_packages = 0;
 
 bool send_package_request = false;
 void setup()
@@ -26,15 +27,21 @@ void loop()
     Wire.requestFrom(0x01, 4);
     while (Wire.available()) {
       int color = Wire.read();
-      int width = Wire.read();
-      int height = Wire.read();
-      int length = Wire.read();
 
-      Serial.println("COLOR RECIBIDO: " + String(color));
-      Serial.println("ANCHO RECIBIDO: " + String(width));
-      Serial.println("ALTO RECIBIDO: " + String(height));
-      Serial.println("LARGO RECIBIDO: " + String(length));
-      
+      if(color != 0){
+        int width = Wire.read();
+        int height = Wire.read();
+        int length = Wire.read();
+
+        Serial.println("COLOR RECIBIDO: " + String(color));
+        Serial.println("ANCHO RECIBIDO: " + String(width));
+        Serial.println("ALTO RECIBIDO: " + String(height));
+        Serial.println("LARGO RECIBIDO: " + String(length));
+      }else{
+        not_recognized_packages++;
+        Serial.println("TOTAL PAQUETES NO RECONOCIDOS: " + String(not_recognized_packages));
+      }
+
     }
     send_package_request = false;
   }

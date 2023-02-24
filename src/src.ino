@@ -110,13 +110,39 @@ void init_sequence(){
             }
             // TODO: Servo
 
-            Serial.println("Color: " + String(color) + " Width: " + String(width));
-            
+            // move to sensor above
+
+            int above_distance = get_above_distance();
+
+            while(above_distance >= 17){
+                move_motor();
+                above_distance = get_above_distance();
+            }
+            int average_above_distance = above_distance;
+            unsigned long above_init_time = millis();
+
+            while(above_distance < 18){
+                above_distance = get_above_distance();
+            }
+            unsigned long total_time = millis() - above_init_time;
+            Serial.println("TOTAL TIME : " + String(total_time) + "ms");
+
+            int height = 18 - average_above_distance;
+            if (height < 2) {
+                height = 2;
+            }
+
+            int length = total_time * 0.002;
+            if(length < 2){
+                length = 2;
+            }
+
             package_color = color;
             package_width = width;
-            package_height = 10;
-            package_length = 20;
-            
+            package_height = height;
+            package_length = length;
+            Serial.println("COLOR : " + String(package_color) + " WIDTH : " + String(package_width) + " HEIGHT : " + String(package_height) + " LENGTH : " + String(package_length));
+
             // Send interrupt signal
             Serial.println("INTERRUPT SIGNAL");
             digitalWrite(interrupt_signal_pin, HIGH);
@@ -127,9 +153,14 @@ void init_sequence(){
         }else{
             // NOT RECOGNIZED PACKAGE
             Serial.println("NOT RECOGNIZED PACKAGE");
+            package_color = 0;  
+            package_width = 0;
+            package_height = 0;
+            package_length = 0;
         }
 
         // Move to next package
+        right_distance = get_right_distance();
         while (right_distance > 11){
             right_distance = get_right_distance();
         }
