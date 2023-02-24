@@ -15,13 +15,6 @@ void setup()
   Wire.begin();
 
   attachInterrupt(digitalPinToInterrupt(2), package_detection_request, RISING);
-
-void setup() {
-  // put your setup code here, to run once:
-  Wire.begin(); // Start the communication, here is the master
-  Serial.begin(9600);
-  Serial.println("From Master, and the I2C was set");
-  sendDataToSlave();
 }
 
 void loop()
