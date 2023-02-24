@@ -3,8 +3,8 @@
 
 #include <Arduino.h>
 
-#define MOTOR1_IN1 2
-#define MOTOR1_IN2 1
+#define MOTOR1_IN1 A0
+#define MOTOR1_IN2 13
 #define MOTOR1_ENA 3
 #define MOTOR1_VEL 255
 
