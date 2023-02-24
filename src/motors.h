@@ -14,4 +14,6 @@ void move_motor();
 
 void stop_motor();
 
+void move_motor_backwards();
+
 #endif

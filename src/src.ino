@@ -18,6 +18,8 @@
 
 unsigned long package_aligment_time = 0;
 unsigned long stop_motor_time = 0;
+int posible_package_count_right = 0;
+int realigment_tries = 0;
 
 void setup() {
     Serial.begin(9600);
@@ -29,48 +31,78 @@ void setup() {
 
 }
 
+void color_detection(){
+    // Color detection
+    stop_motor_time = millis();
+    reset_color_probabilities();
+    while (millis() - stop_motor_time <  1500) {
+        color_sequence();
+    }
+}
+
+void color_realign(){
+    move_motor();
+    delay(200);
+    stop_motor();
+    color_detection();
+    int color = resultant_color();
+
+    realigment_tries++;
+    if(color == 0 && realigment_tries < 3){
+        color_realign();
+    }
+}
+
 void init_sequence(){
 
     int right_distance = get_right_distance();
 
-    if(right_distance <= 12){
-
-        Serial.print("OBJECT DETECTED");
-
-        package_aligment_time = millis();
-        move_motor();
-        while (millis() - package_aligment_time <  200) {}
-
-        stop_motor();
-        Serial.println("MOTOR STOP !!!");
-
-        stop_motor_time = millis();
-        reset_color_probabilities();
-        while (millis() - stop_motor_time <  5000) {
-            color_sequence();
-        }
-
-        int color = resultant_color();
-
-        if(color == 1){
-            Serial.println("RED");
-        } else if(color == 2){
-            Serial.println("YELLOW");
-        } else if(color == 3){
-            Serial.println("BLUE");
-        }else{
-            Serial.println("NO COLOR");
-        }
-
-        move_motor();
-        if(color != 0){
-            delay(1000);
-            // TODO: left ultrasonic sensor
-        }else{
-            delay(100);
-        }
+    if(right_distance <= 11){
+        posible_package_count_right++;      
     }
 
+    if(posible_package_count_right >= 3){
+        posible_package_count_right = 0;
+        Serial.println("OBJECT DETECTED");
+
+        // Package aligment
+        package_aligment_time = millis();
+        move_motor();
+        while (millis() - package_aligment_time <  100) {}
+        stop_motor();
+        right_distance = get_right_distance();
+
+
+        // Color detection
+        color_detection();
+        move_motor();
+        int color = resultant_color();
+
+        // Realign package
+        if(color == 0){
+            realigment_tries = 0;
+            color_realign();
+            move_motor();
+        }
+
+        if(color != 0){
+            int width = 13 - right_distance;
+            if (width < 2) {
+                width = 2;
+            }
+            // TODO: Servo
+            Serial.println("Color: " + String(color) + " Width: " + String(width));
+            
+        }else{
+            // NOT RECOGNIZED PACKAGE
+            Serial.println("NOT RECOGNIZED PACKAGE");
+        }
+
+        // Move to next package
+        while (right_distance > 11){
+            right_distance = get_right_distance();
+        }
+    }
 
     delay(100);
 
@@ -79,5 +111,4 @@ void init_sequence(){
 void loop() {
 
     init_sequence();
-
 }

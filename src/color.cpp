@@ -45,26 +45,25 @@ void color_sequence() {
     blue_frequency = pulseIn(COLOR_OUTPUT, LOW);
     delay(100);
 
-    //HAY QUE CALIBRARLO MANUALMENTE 
-    
+    // Serial.print( "Red: " + String(red_frequency));
+    // Serial.print(" Green: " + String(green_frequency));
+    // Serial.print(" Blue: " + String(blue_frequency));
+    // Serial.println();
 
     // AMARILLO 
-    if (red_frequency >= 118 && red_frequency <= 175
-    &&  green_frequency >= 166 && green_frequency <=234
-    &&  blue_frequency >=230 && blue_frequency <= 310)  yellow_probability++;
-    
-    // Azul 
-    if (red_frequency >= 191 && red_frequency <= 260
-    &&  green_frequency >= 91 && green_frequency <=311
-    &&  blue_frequency >=107 && blue_frequency <= 147)  blue_probability++;
-    
+    if (red_frequency >= 107 && red_frequency <= 175
+    &&  green_frequency >= 165 && green_frequency <=235
+    &&  blue_frequency >=229 && blue_frequency <= 318)  yellow_probability++;
     
     // ROJO 
-    if (red_frequency >= 197 && red_frequency <= 283
+    if (red_frequency >= 162 && red_frequency <= 283
     &&  green_frequency >= 150 && green_frequency <=518
-    &&  blue_frequency >=258 && blue_frequency <= 334)  red_probability++;
+    &&  blue_frequency >=246 && blue_frequency <= 365)  red_probability++;
     
-    
+    // Azul 
+    if (red_frequency >= 164 && red_frequency <= 260
+    &&  green_frequency >= 87 && green_frequency <=311
+    &&  blue_frequency >=97 && blue_frequency <= 147)  blue_probability++;
 
     delay(200);
 }
