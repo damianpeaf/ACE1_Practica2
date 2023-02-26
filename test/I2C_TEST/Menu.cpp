@@ -34,6 +34,13 @@ int lastButtonState1 = 0; // Último estado del botón para avanzar
 int lastButtonState2 = 0; // Último estado del botón para retroceder
 int messageNum = 1;       // Número de mensaje actual
 
+void initial_setup() {
+  pinMode(buttonPin1,INPUT);
+  pinMode(buttonPin2,INPUT);
+  initial_menu();
+  manage_menu();
+}
+
 void display_basic_menu(uint8_t* customChar, String message, String prompt) {
   lcd.begin(16,2);
   lcd.createChar(0, customChar);
@@ -50,6 +57,9 @@ void display_basic_menu(uint8_t* customChar, String message, String prompt) {
 
 void initial_menu() {
   display_basic_menu(clockChar, "GRP 07 B ACE1", "Starting");
+  delay(6000);
+  display_basic_menu(readyChar, "ready to start", "Press x for menu");
+  
 }
 
 void ready_menu() {

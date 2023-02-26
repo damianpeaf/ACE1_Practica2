@@ -16,5 +16,6 @@ void initial_menu();
 void ready_menu();
 void statistics_menu();
 void manage_menu();
+void initial_setup();
 
 #endif
