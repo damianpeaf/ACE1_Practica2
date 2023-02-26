@@ -4,8 +4,6 @@
 #include "Menu.h"
 
 
-LiquidCrystal lcd(2,3,4,5,6,7); // RS, E, D4, D5, D6, D7
-
 byte clockChar[8] = {
   B11111,
   B01010,
@@ -28,7 +26,6 @@ byte readyChar[8] = {
   B00000
 };
 
-String initialMessage = "GRP 07 B ACE1";
 String readyMessage = "ready to start";
 
 void display_basic_menu(uint8_t customChar, String message, String prompt) {
@@ -43,10 +40,14 @@ void display_basic_menu(uint8_t customChar, String message, String prompt) {
   lcd.print(prompt);
 }
 
+
+
 void initial_menu() {
-  display_basic_menu(clockChar, initialMessage, "Press x for menu");
+  display_basic_menu(clockChar, "GRP 07 B ACE1", "Press x for menu");
 }
 
 void ready_menu() {
-  display_basic_menu(readyChar, readyMessage, "Press x to start");
+  display_basic_menu(readyChar, "ready to start", "Press x to start");
 }
+
+// Scroll the message across the display
