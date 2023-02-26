@@ -1,6 +1,8 @@
 #ifndef Menu_h
 #define Menu_h
 
+extern LiquidCrystal lcd;
+
 extern String initialMessage;
 extern String readyMessage;
 extern int actualTime;

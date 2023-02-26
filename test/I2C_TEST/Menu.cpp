@@ -3,6 +3,7 @@
 
 #include "Menu.h"
 
+LiquidCrystal lcd(10,3,4,5,6,7);
 
 byte clockChar[8] = {
   B11111,
