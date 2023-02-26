@@ -1,6 +1,14 @@
 #include "Wire.h" 
+#include "Menu.h"
+#include "Controllers.h"
 
 #define interrupt_signal_pin 2
+
+// LCD
+LiquidCrystal lcd(2,3,4,5,6,7); // RS, E, D4, D5, D6, D7
+
+// PACKAGES
+const int PENDANT_PACKAGES = 0;
 
 //MAESTRO
 byte CODE;
@@ -8,6 +16,7 @@ byte respuesta;
 int not_recognized_packages = 0;
 
 bool send_package_request = false;
+
 void setup()
 {
   Serial.begin(9600);
@@ -17,11 +26,23 @@ void setup()
   attachInterrupt(digitalPinToInterrupt(2), package_detection_request, RISING);
 }
 
+void init_mode(){
+  Serial.println("INIT MODE");
+  initial_menu();
+  delay(5000);
+  while(buttons_mode != 1){
+    // Show to press x to start
+    startMenu();
+    // Wait a response from a button
+    initMenu();
+  }
+}
 void loop()
 {
+  // start machine
+  init_mode();
   
   delay(1000);
-
   if(send_package_request){
     Wire.requestFrom(0x01, 4);
     while (Wire.available()) {
@@ -44,7 +65,6 @@ void loop()
     }
     send_package_request = false;
   }
-
 }
 
 

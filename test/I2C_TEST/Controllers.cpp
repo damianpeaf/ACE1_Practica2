@@ -42,8 +42,7 @@ void leftButtonMenu(){
 }
 
 void startMenu() {
-  // init_sequence();
-  // START MACHINE  init_sequence();
+  
   rightButtonMenu();
   leftButtonMenu();
 
