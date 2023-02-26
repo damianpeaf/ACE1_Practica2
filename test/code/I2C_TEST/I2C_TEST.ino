@@ -1,24 +1,40 @@
 #include <Wire.h> 
+byte CODE; // This is the point to traslated messages
 
 void setup() {
   // put your setup code here, to run once:
-  Wire.begin(); // Start the communication
+  Wire.begin(); // Start the communication, here is the master
+  Serial.begin(9600);
+  Serial.println("From Master, and the I2C was set");
+  sendDataToSlave();
+}
+
+void sendDataToSlave() {
+  int value = 20;
+  Wire.beginTransmission(0x01);
+  Wire.write(value);
+  Wire.endTransmission();
+  delay(1000);
+  Serial.println("Escribiendo al slave");
 
 }
-byte pin[] = {2,3,4,5,6};
-byte state = 0;
-
-void slave(){
-  for(int i = 0; i< 5; ii+){
-    //
-    Wire.beginTransmission(123); // this is the address of the slave
-    Wire.write(pin[i]); // write in the pin of the slave
-    Wire.write(state); // send data
-    Wire.endTransmission(); // Stop transmission
-    delay(1000);
+void receiveData(){
+  // Request data from the slave 
+  Wire.requestFrom(0x01,1); // From the slave address, only 1 data transfer, this may vary
+  while(Wire.available()){ // While both arduino's are connected...
+    CODE = Wire.read(); // read the code that is being transferred
   }
+  Serial.println(CODE);  
 }
-void loop() {
+
+
+void loop() {  
+  
   // put your main code here, to run repeatedly:
-  slave();
+  Wire.requestFrom(0x01,1); // From the slave address, only 1 data transfer, this may vary
+  while(Wire.available()){ // While both arduino's are connected...
+    CODE = Wire.read(); // read the code that is being transferred
+  }
+  Serial.println(CODE); 
+  delay(1000);
 }
