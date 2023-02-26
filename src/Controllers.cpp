@@ -4,8 +4,8 @@
 const int buttons_mode = 0; // 1 = start menu, 2 = stop menu 
 // button left
 // button right
-const int BTN_LEFT = 2;
-const int BTN_RIGHT = 3;
+const int BTN_LEFT = 5;
+const int BTN_RIGHT = 6;
 
 // Button previous states
 int last_btn_left_state = HIGH;
