@@ -16,6 +16,7 @@
 #include "motors.h"
 #include "color.h"
 #include "ultrasonic.h"
+#include "Controllers.h"
 
 // INTERRUPT
 #define interrupt_signal_pin 0
@@ -27,6 +28,7 @@ byte package_height;
 byte package_length;
 
 // Package detection
+const int PENDANT_PACKAGES = 0;
 unsigned long package_aligment_time = 0;
 unsigned long stop_motor_time = 0;
 int posible_package_count_right = 0;
@@ -172,8 +174,19 @@ void init_sequence(){
 
 }
 
+void initial_screen(){
+    // function to show the start screen for 6seconds
+    while(buttons_mode != 1){
+        // function to wait a response from the user
+        initMenu();
+        // Show screen wait for the user to press a button to join to the menu
+    }
+}
+
 void loop() {
-  init_sequence();
+    // initial_screen();
+    // put this function inside the controller 
+    init_sequence();
 }
 
 void send_package_info()
