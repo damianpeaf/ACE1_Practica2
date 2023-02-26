@@ -17,6 +17,7 @@
 #include "motors.h"
 #include "color.h"
 #include "ultrasonic.h"
+#include "Controllers.h"
 
 // Servos
 Servo servo_1;
@@ -36,10 +37,13 @@ byte package_height;
 byte package_length;
 
 // Package detection
+const int PENDANT_PACKAGES = 0;
 unsigned long package_aligment_time = 0;
 unsigned long stop_motor_time = 0;
 int posible_package_count_right = 0;
 int realigment_tries = 0;
+
+LiquidCrystal lcd(2,3,4,5,6,7); // RS, E, D4, D5, D6, D7
 
 void setup() {
     Serial.begin(9600);
@@ -196,6 +200,15 @@ void init_sequence(){
     }
 
     delay(100);
+}
+
+void initial_screen(){
+    // function to show the start screen for 6seconds
+    while(buttons_mode != 1){
+        // function to wait a response from the user
+        initMenu();
+        // Show screen wait for the user to press a button to join to the menu
+    }
 }
 
 void loop() {
