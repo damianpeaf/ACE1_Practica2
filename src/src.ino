@@ -60,6 +60,8 @@ void setup() {
     // SERVOS
     servo_1.attach(10);
     servo_2.attach(9);
+    servo_1.write(0);
+    servo_2.write(0);
 }
 
 void color_detection(){
@@ -174,7 +176,22 @@ void init_sequence(){
                 servo_1.write(180);
                 delay(700);
                 servo_1.write(0);
-                Serial.println("Servo 1");
+                delay(700);
+            }else if (package_color == 2) {
+                delay(1000);
+                stop_motor();
+                delay(700);
+                servo_2.write(180);
+                delay(700);
+                servo_2.write(0);
+                delay(700);
+            }else if (package_color == 3) {
+                delay(1000);
+                stop_motor();
+                delay(700);
+                servo_2.write(0);
+                delay(700);
+                servo_2.write(180);
                 delay(700);
             }
         }else{
@@ -197,15 +214,6 @@ void init_sequence(){
     delay(100);
 }
 
-void initial_screen(){
-    // function to show the start screen for 6seconds
-    while(buttons_mode != 1){
-        // function to wait a response from the user
-        initMenu();
-        // Show screen wait for the user to press a button to join to the menu
-    }
-}
-
 void loop() {
   init_sequence();
 
@@ -220,11 +228,11 @@ void loop() {
         digitalWrite(interrupt_signal_pin, LOW);
         delay(50);
     }
+
 }
 
 void send_package_info()
 {
-    posible_package_count_right = 0;
     Serial.println("SEND");
     Wire.write(package_color);
     Wire.write(package_width);
