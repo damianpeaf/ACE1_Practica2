@@ -1,11 +1,9 @@
 #include <LiquidCrystal.h>
-#include "Wire.h" 
 #include "Menu.h"
+#include "Wire.h" 
 #include "Controllers.h"
 
 #define interrupt_signal_pin 2
-
-// LCD
 
 // PACKAGES
 const int PENDANT_PACKAGES = 0;
