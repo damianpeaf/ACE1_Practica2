@@ -1,3 +1,4 @@
+
 // ----- SLAVE ----- //
 /*
     Código fuente - Práctica 2 - Arquitectura de Computadores y Ensambladores 1
@@ -9,7 +10,7 @@
         - José Manuel Ibarra Pirir 202001800
 */
 
-#include <LiquidCrystal.h>
+#include <Servo.h>
 
 #include "Menu.h"
 #include "Wire.h" 
@@ -17,8 +18,16 @@
 #include "color.h"
 #include "ultrasonic.h"
 
+// Servos
+Servo servo_1;
+Servo servo_2;
+int pos1 = 0;  // Variable para almacenar la posición del servo 1
+int pos2 = 0;  // Variable para almacenar la posición del servo 2
+
+
 // INTERRUPT
 #define interrupt_signal_pin 0
+bool have_to_send = false;
 
 // Package props
 byte package_color;
@@ -43,10 +52,15 @@ void setup() {
     // ESCLAVO
     Wire.begin(0x01);
     Wire.onRequest(send_package_info);
+    Wire.onReceive(receive_info);
 
     // INTERRUPT
     pinMode(interrupt_signal_pin, OUTPUT);
     digitalWrite(interrupt_signal_pin, LOW);
+
+    // SERVOS
+    servo_1.attach(10);
+    servo_2.attach(9);
 }
 
 void color_detection(){
@@ -76,17 +90,18 @@ void init_sequence(){
     int right_distance = get_right_distance();
 
     if(right_distance <= 11){
-        posible_package_count_right++;      
+        posible_package_count_right++;
+        Serial.println("POSSIBLE PACKAGE");   
     }
 
-    if(posible_package_count_right >= 3){
+    if(posible_package_count_right >= 4){
         posible_package_count_right = 0;
         Serial.println("OBJECT DETECTED");
 
         // Package aligment
         package_aligment_time = millis();
         move_motor();
-        while (millis() - package_aligment_time <  100) {}
+        while (millis() - package_aligment_time <  80) {}
         stop_motor();
         right_distance = get_right_distance();
 
@@ -104,54 +119,69 @@ void init_sequence(){
         }
 
         if(color != 0){
+            
+            if(color == 1){
+                servo_1.write(0);
+            }else if(color == 2){
+                servo_2.write(0);
+            }else if(color == 3){
+                servo_2.write(180);
+            }
+
             int width = 13 - right_distance;
             if (width < 2) {
                 width = 2;
+            }else if(width > 10){
+                width = 10;
             }
-            // TODO: Servo
 
             // move to sensor above
-
             int above_distance = get_above_distance();
-
-            while(above_distance >= 17){
+            while(above_distance >= 15){
                 move_motor();
                 above_distance = get_above_distance();
             }
             int average_above_distance = above_distance;
-            unsigned long above_init_time = millis();
 
-            while(above_distance < 18){
-                above_distance = get_above_distance();
-            }
-            unsigned long total_time = millis() - above_init_time;
-            Serial.println("TOTAL TIME : " + String(total_time) + "ms");
+
+            int back_distance = get_back_distance();
 
             int height = 18 - average_above_distance;
             if (height < 2) {
                 height = 2;
+            }else if(height > 10){
+                height = 10;
             }
 
-            int length = total_time * 0.002;
+            int length = 52-back_distance;
             if(length < 2){
                 length = 2;
+            }else if(length > 10){
+                length = 10;
             }
 
             package_color = color;
             package_width = width;
             package_height = height;
             package_length = length;
-            Serial.println("COLOR : " + String(package_color) + " WIDTH : " + String(package_width) + " HEIGHT : " + String(package_height) + " LENGTH : " + String(package_length));
 
-            // Send interrupt signal
-            Serial.println("INTERRUPT SIGNAL");
-            digitalWrite(interrupt_signal_pin, HIGH);
-            delay(10);
-            digitalWrite(interrupt_signal_pin, LOW);
+            have_to_send = true;
 
 
+            if (package_color == 1) {
+                delay(500);
+                stop_motor();
+                delay(700);
+                servo_1.write(180);
+                delay(700);
+                servo_1.write(0);
+                Serial.println("Servo 1");
+                delay(700);
+            }
         }else{
             // NOT RECOGNIZED PACKAGE
+            have_to_send = true;
+
             Serial.println("NOT RECOGNIZED PACKAGE");
             package_color = 0;  
             package_width = 0;
@@ -159,26 +189,44 @@ void init_sequence(){
             package_length = 0;
         }
 
-        // Move to next package
+        move_motor();
+        delay(1000);
         right_distance = get_right_distance();
-        while (right_distance > 11){
-            right_distance = get_right_distance();
-        }
+        Serial.println("END OF SEQUENCE");
     }
 
     delay(100);
-
 }
 
 void loop() {
   init_sequence();
+
+    // Send interrupt signal
+    if(have_to_send){
+        have_to_send = false;
+        Serial.println("INTERRUPT SIGNAL");
+        digitalWrite(interrupt_signal_pin, LOW);
+        delay(20);
+        digitalWrite(interrupt_signal_pin, HIGH);
+        delay(20);
+        digitalWrite(interrupt_signal_pin, LOW);
+        delay(50);
+    }
 }
 
 void send_package_info()
 {
-    Serial.println("SOLICITUD DE DATO");
+    posible_package_count_right = 0;
+    Serial.println("SEND");
     Wire.write(package_color);
     Wire.write(package_width);
     Wire.write(package_height);
     Wire.write(package_length);
+}
+
+void receive_info(int howMany) {
+  while (Wire.available()) {
+    char c = Wire.read();
+    Serial.print(c);
+  }
 }
