@@ -26,7 +26,7 @@ void setup()
 
 void init_mode(){
   Serial.println("INIT MODE");
-  initial_menu();
+  initial_setup();
   delay(5000);
   while(buttons_mode != 1){
     // Show to press x to start
