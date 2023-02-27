@@ -26,6 +26,8 @@ int pos2 = 0;  // Variable para almacenar la posición del servo 2
 // INTERRUPT
 #define interrupt_signal_pin 0
 bool have_to_send = false;
+bool have_to_init = false;
+bool have_to_pause = false;
 
 // Package props
 byte package_color;
@@ -46,7 +48,7 @@ void setup() {
     ultrasonic_setup();
     color_setup();
     motor_setup();
-    move_motor();
+    stop_motor();
 
     // ESCLAVO
     Wire.begin(0x01);
@@ -212,10 +214,6 @@ void init_sequence(){
     }
 
     delay(100);
-}
-
-void loop() {
-  init_sequence();
 
     // Send interrupt signal
     if(have_to_send){
@@ -229,6 +227,20 @@ void loop() {
         delay(50);
     }
 
+    if(have_to_pause){
+        stop_motor();
+        while(have_to_pause){
+            delay(100);
+        }
+    }
+}
+
+void loop() {
+    while(have_to_init){
+        move_motor();
+        init_sequence();
+    }
+    stop_motor();
 }
 
 void send_package_info()
@@ -242,7 +254,16 @@ void send_package_info()
 
 void receive_info(int howMany) {
   while (Wire.available()) {
-    char c = Wire.read();
-    Serial.print(c);
+    int option = Wire.read();
+
+    if(option == 0){
+        Serial.println("CONNECTED");
+    }else if(option == 1){
+        Serial.println("INIT/STOP");
+        have_to_init = !have_to_init;
+    }else if(option == 2){
+        have_to_pause = !have_to_pause;
+    }
+
   }
 }
