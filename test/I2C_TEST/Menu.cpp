@@ -39,7 +39,6 @@ void initial_setup() {
   pinMode(buttonPin1,INPUT);
   pinMode(buttonPin2,INPUT);
   initial_menu();
-  manage_menu();
 }
 
 void display_basic_menu(uint8_t* customChar, String message, String prompt) {

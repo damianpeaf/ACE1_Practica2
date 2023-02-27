@@ -39,6 +39,7 @@ void loop()
 {
   // start machine
   init_mode();
+  manage_menu();
   
   delay(1000);
   if(send_package_request){
