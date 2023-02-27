@@ -8,6 +8,7 @@ class Package {
   public:
   //constructor
   Package(int color, int width, int height, int length);
+  Package(int color, int width, int height, int length, bool isReprocessed);
   Package();
 
   // public methods
@@ -19,6 +20,7 @@ class Package {
   int width;
   int height;
   int length;
+  bool isReprocessed;
 
 };
 
