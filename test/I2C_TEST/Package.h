@@ -1,6 +1,7 @@
 #ifndef PACKAGE_H
 #define PACKAGE_H
 
+#include "Arduino.h"
 
 
 class Package {
@@ -17,6 +18,6 @@ class Package {
   int height;
   int length;
 
-}
+};
 
 #endif
