@@ -1,7 +1,9 @@
 // #include "Controllers.h" 
 
+#include <Arduino.h>
+
 // STATE 
-const int buttons_mode = 0; // 1 = start menu, 2 = stop menu 
+int buttons_mode = 0; // 1 = start menu, 2 = stop menu 
 // button left
 // button right
 const int BTN_LEFT = 5;

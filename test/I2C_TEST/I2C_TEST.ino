@@ -1,12 +1,13 @@
-#include "Wire.h" 
+#include <LiquidCrystal.h>
 #include "Menu.h"
+#include "Wire.h" 
 #include "Controllers.h"
 #include "Package.h"
 
 #define interrupt_signal_pin 2
 
-// LCD
-LiquidCrystal lcd(2,3,4,5,6,7); // RS, E, D4, D5, D6, D7
+// PACKAGES
+const int PENDANT_PACKAGES = 0;
 
 //MAESTRO
 byte CODE;
@@ -32,7 +33,7 @@ void setup()
 
 void init_mode(){
   Serial.println("INIT MODE");
-  initial_menu();
+  initial_setup();
   delay(5000);
   while(buttons_mode != 1){
     // Show to press x to start
@@ -45,6 +46,7 @@ void loop()
 {
   // start machine
   init_mode();
+  manage_menu();
   
   delay(1000);
   if(send_package_request){
