@@ -22,6 +22,10 @@ Servo servo_2;
 int pos1 = 0;  // Variable para almacenar la posición del servo 1
 int pos2 = 0;  // Variable para almacenar la posición del servo 2
 
+// LEDS
+#define RED_LED_PIN 9
+#define YELLOW_LED_PIN 10
+#define BLUE_LED_PIN A5
 
 // INTERRUPT
 #define interrupt_signal_pin 0
@@ -60,10 +64,19 @@ void setup() {
     digitalWrite(interrupt_signal_pin, LOW);
 
     // SERVOS
-    servo_1.attach(10);
-    servo_2.attach(9);
-    servo_1.write(0);
-    servo_2.write(0);
+    // servo_1.attach(10);
+    // servo_2.attach(9);
+    // servo_1.write(0);
+    // servo_2.write(0);
+
+    // LEDS
+    pinMode(RED_LED_PIN, OUTPUT);
+    pinMode(YELLOW_LED_PIN, OUTPUT);
+    pinMode(BLUE_LED_PIN, OUTPUT);
+
+    digitalWrite(RED_LED_PIN, LOW);
+    digitalWrite(YELLOW_LED_PIN, LOW);
+    digitalWrite(BLUE_LED_PIN, LOW);
 }
 
 void color_detection(){
@@ -119,6 +132,7 @@ void init_sequence(){
             realigment_tries = 0;
             color_realign();
             move_motor();
+            color = resultant_color();
         }
 
         if(color != 0){
@@ -170,31 +184,24 @@ void init_sequence(){
 
             have_to_send = true;
 
-
             if (package_color == 1) {
                 delay(500);
                 stop_motor();
-                delay(700);
-                servo_1.write(180);
-                delay(700);
-                servo_1.write(0);
-                delay(700);
+                digitalWrite(RED_LED_PIN, HIGH);
+                delay(1400);
+                digitalWrite(RED_LED_PIN, LOW);
             }else if (package_color == 2) {
                 delay(1000);
                 stop_motor();
-                delay(700);
-                servo_2.write(180);
-                delay(700);
-                servo_2.write(0);
-                delay(700);
+                digitalWrite(YELLOW_LED_PIN, HIGH);
+                delay(1400);
+                digitalWrite(YELLOW_LED_PIN, LOW);
             }else if (package_color == 3) {
                 delay(1000);
                 stop_motor();
-                delay(700);
-                servo_2.write(0);
-                delay(700);
-                servo_2.write(180);
-                delay(700);
+                digitalWrite(BLUE_LED_PIN, HIGH);
+                delay(1400);
+                digitalWrite(BLUE_LED_PIN, LOW);
             }
         }else{
             // NOT RECOGNIZED PACKAGE

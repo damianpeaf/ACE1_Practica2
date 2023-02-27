@@ -29,6 +29,16 @@ LinkedList::LinkedList(){
     size = 0;
 }
 
+void LinkedList::clear(){
+    Node* aux = primero;
+    while(aux != 0){
+        primero = primero->siguiente;
+        delete aux;
+        aux = primero;
+    }
+    size = 0;
+}
+
 void LinkedList::Insert(Package package){
     Node* nuevo = new Node();
     nuevo->package = package;

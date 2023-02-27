@@ -44,6 +44,7 @@ class LinkedList{
     int getColorVolumeMedia(int color);
     String getStageName(int i);
     Package getPackage(int i);
+    void clear();
 };
 
 

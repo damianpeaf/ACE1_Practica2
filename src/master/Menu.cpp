@@ -17,6 +17,10 @@ LinkedList packagesList;
 LinkedList sortPackagesList;
 
 
+#define ready_led_pin A0
+#define working_led_pin A1
+#define pause_led_pin A2
+
 LiquidCrystal lcd(7,6,5,4,3,10); // RS, E, D4, D5, D6, D7
 
 
@@ -53,6 +57,9 @@ int messageNum = 1;       // Número de mensaje actual
 void initial_setup() {
   pinMode(button_right,INPUT);
   pinMode(button_left,INPUT);
+  pinMode(ready_led_pin, OUTPUT);
+  pinMode(working_led_pin, OUTPUT);
+  pinMode(pause_led_pin, OUTPUT);
   initial_menu();
 }
 
@@ -92,8 +99,12 @@ void initial_menu() {
 void manage_menu() {
   while(true){
     if (is_left_button_pressed()) {
-      
+      digitalWrite(ready_led_pin, LOW);
+      digitalWrite(working_led_pin, HIGH);
+
       count = 0;
+      packagesList.clear();
+      sortPackagesList.clear();
       Wire.beginTransmission(0x01);
       Wire.write(1); // START
       Wire.endTransmission();
@@ -108,6 +119,10 @@ void manage_menu() {
           Wire.write(2); // PAUSE
           Wire.endTransmission();
 
+          digitalWrite(working_led_pin, LOW);
+          digitalWrite(pause_led_pin, HIGH);
+
+
           print_screen("IZQ: ", "CONTINUE");
           while (true) {
             if (is_left_button_pressed()) {
@@ -115,6 +130,8 @@ void manage_menu() {
               Wire.write(2); // RESUME
               Wire.endTransmission();
               print_screen("IZQ: PAUSE", "DER: END");
+              digitalWrite(pause_led_pin, LOW);
+              digitalWrite(working_led_pin, HIGH);
               break;
             }
           }
@@ -128,6 +145,8 @@ void manage_menu() {
           Wire.endTransmission();
           statistics_menu();
           print_screen("IZQ:", "INICIAR");
+          digitalWrite(working_led_pin, LOW);
+          digitalWrite(ready_led_pin, HIGH);
           break;
         }
 
@@ -143,8 +162,10 @@ void manage_menu() {
 }
 
 void main_menu(){
-  
+  digitalWrite(ready_led_pin, HIGH);
+
   while(true){
+
     if(is_left_button_pressed()){
       print_screen("IZQ:", "INICIAR");
       manage_menu();
