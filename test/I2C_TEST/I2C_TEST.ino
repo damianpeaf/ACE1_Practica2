@@ -47,7 +47,7 @@ void loop()
   // start machine
   init_mode();
   manage_menu();
-  
+  startMenu();
   delay(1000);
   if(send_package_request){
     Wire.requestFrom(0x01, 4);
