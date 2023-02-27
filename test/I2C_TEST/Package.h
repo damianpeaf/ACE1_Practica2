@@ -7,7 +7,9 @@
 class Package {
   public:
   //constructor
-  Package(int color, int widht, int height, int length);
+  Package(int color, int width, int height, int length);
+  Package();
+
   // public methods
   void getValues(void);
 
