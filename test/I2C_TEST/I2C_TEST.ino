@@ -1,14 +1,12 @@
 #include "Wire.h" 
 #include "Menu.h"
 #include "Controllers.h"
+#include "Package.h"
 
 #define interrupt_signal_pin 2
 
 // LCD
 LiquidCrystal lcd(2,3,4,5,6,7); // RS, E, D4, D5, D6, D7
-
-// PACKAGES
-const int PENDANT_PACKAGES = 0;
 
 //MAESTRO
 byte CODE;
@@ -16,6 +14,12 @@ byte respuesta;
 int not_recognized_packages = 0;
 
 bool send_package_request = false;
+
+// ARRAY OF PACKAGES THAT ARE BEIGN SAVED  
+const int count = 0;
+const int ARRAY_SIZE = 10;
+Package packages[ARRAY_SIZE];
+
 
 void setup()
 {
@@ -52,7 +56,12 @@ void loop()
         int width = Wire.read();
         int height = Wire.read();
         int length = Wire.read();
-
+        // create a new package
+        Package package(color, width, height, length);
+        // save the package in the array
+        packages[count] = package;
+        count++;
+        // show the package values
         Serial.println("COLOR RECIBIDO: " + String(color));
         Serial.println("ANCHO RECIBIDO: " + String(width));
         Serial.println("ALTO RECIBIDO: " + String(height));
