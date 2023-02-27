@@ -2,7 +2,7 @@
 #include <Arduino.h>
 
 #include "Menu.h"
-#include "LinkedList.cpp"
+#include "LinkedList.h"
 
 //MAESTRO
 int not_recognized_packages = 0;
@@ -14,6 +14,7 @@ bool send_package_request = false;
 int count = 0;
 Package package;
 LinkedList packagesList;
+LinkedList sortPackagesList;
 
 
 LiquidCrystal lcd(7,6,5,4,3,10); // RS, E, D4, D5, D6, D7
@@ -162,8 +163,9 @@ void initial_sequence_detection(){
       int length = Wire.read();
       // create a new package
       // save the package in the array
-      package = Package(color, width, height, length,width*height*length);
+      package = Package(color, width, height, length,width*height*length,count);
       packagesList.Insert(package);
+      sortPackagesList.Insert(package);
       count++;
       // show the package values
       Serial.println("COLOR RECIBIDO: " + String(color));
@@ -190,8 +192,9 @@ void reprocess_sequence_detection(){
       int height = Wire.read();
       int length = Wire.read();
 
-      package = Package(color, width, height, length, width*height*length);
+      package = Package(color, width, height, length, width*height*length,count);
       packagesList.Insert(package);
+      sortPackagesList.Insert(package);
       count++;
 
       Serial.println("COLOR RECIBIDO: " + String(color));
@@ -231,29 +234,42 @@ void statistics_menu(){
     if(is_right_button_pressed()){
 
 
-        int media = 0;
-        int packages_count = 0;
-
+        double media = 0;
+        int mediana = 0;
 
         media = packagesList.getMedia();
-        packagesList.Sort();
-        mediana = packagesList.Mediana
+        sortPackagesList.Sort();
+        mediana = sortPackagesList.getMediana();
 
-        int mediana = 0;
+        
 
         print_screen("Media: " + String(media), "Mediana: " + String(mediana));
 
         int stage = 0;
-        while(!end){
-          if(is_right_button_pressed()){
-            if(stage == 0){
-              
-              // TODO
-
-              print_screen("INITIAL", "R: " );
+        int red = 0;
+        int blue = 0;
+        int yellow = 0;
+        if (is_right_button_pressed){
+          while(!end){
+            while(stage < count){
+              if(is_left_button_pressed()){
+                stage++;
+              }
+              red = packagesList.getRed(stage);
+              yellow = packagesList.getYellow(stage);
+              blue = packagesList.getBlue(stage);
+              lcd.clear();
+              print_screen("INITIAL", "R: "+String(red)+ " Y: "+ String(yellow)+ " B: "+ String(blue));
             }
           }
+          if (is_right_button_pressed()){
+
+          }
         }
+        
+       
+    
+        
     }
   }
 
