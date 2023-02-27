@@ -52,6 +52,7 @@ La implementación de este protocolo fue mediante el uso de dos Arduino, conecta
 - Fuente de 5V
 - 2 protoboards
 - 3 leds 
+- Potenciometro
 ### Construcción:
 - Madera
 - Fomi
@@ -61,31 +62,32 @@ La implementación de este protocolo fue mediante el uso de dos Arduino, conecta
 Diseño encapsulado de la máquina transportadora de paquetes. 
 ![Máquina](./images/tech/maquina.jpeg)
 
-- Banda Transportadora: Para hacer girar la transportadora se utilizó dos motores DC con caja reductora alimentados con una fuente de 5 volteos. El material utilizado para la banda fue Fomi. La banda esta programada para parar al momento que el paquete llega al sensor de luz, cuando es decteado, sigue su movimiento normal, realiza lo mismo para poder ser clasificado.
+- **Banda Transportadora**: Para hacer girar la transportadora se utilizó dos motores DC con caja reductora alimentados con una fuente de 5 volteos. El material utilizado para la banda fue Fomi. La banda esta programada para parar al momento que el paquete llega al sensor de luz, cuando es decteado, sigue su movimiento normal, realiza lo mismo para poder ser clasificado.
 ![Banda transportadora](./images/tech/banda.jpeg)
 
-- Sensor de color: El sensor de color se encuentra al inicio de la banda transportadora, pegado a un costado de esta envuelto en una caja para encapsular la luz que entra, ya que este sensor debe ser calibrado para identificar colores específicos, en este caso: rojo, amarillo y azul. 
+- **Sensor de color**: El sensor de color se encuentra al inicio de la banda transportadora, pegado a un costado de esta envuelto en una caja para encapsular la luz que entra, ya que este sensor debe ser calibrado para identificar colores específicos, en este caso: rojo, amarillo y azul. 
 ![Sensor de color](./images/tech/color.jpeg)
 
-- Sensor de ultrasonico: Para medir las dimensiones de la caja se utilizó 3 sensores ultrasónicos. Para obtener las medidas de cada caja se posicionó cada sensor en un lugar específico.
-  - Altura: Se colocó un sensor a una distancia de 15cm a nivel de la banda transportadora, cuando detecta un objeto (paquete) obtiene la distancia a la que fue detectada, luego se resta con la altura total.
+- **Sensor de ultrasonico**: Para medir las dimensiones de la caja se utilizó 3 sensores ultrasónicos. Para obtener las medidas de cada caja se posicionó cada sensor en un lugar específico.
+  - **Altura**: Se colocó un sensor a una distancia de 15cm a nivel de la banda transportadora, cuando detecta un objeto (paquete) obtiene la distancia a la que fue detectada, luego se resta con la altura total.
   ![Altura](./images/tech/altura.jpeg)
   ![Altura](./images/tech/altura2.jpeg)
 
-  - Ancho: Se colocó un sensor a una distancia a un centímetro del costado de la banda transportadora, cuando detecta un objeto (paquete) obtiene la distancia a la que fue detectada, luego se resta con el ancho de la banda transportadora y el centímetro.
+  - **Ancho**: Se colocó un sensor a una distancia a un centímetro del costado de la banda transportadora, cuando detecta un objeto (paquete) obtiene la distancia a la que fue detectada, luego se resta con el ancho de la banda transportadora y el centímetro.
   ![Ancho](./images/tech/ancho.jpeg)
   ![Ancho](./images/tech/ancho2.jpeg)
 
-  - Largo: Para la medición del largo al igual que la anchura, se tomó como medida estática la distancia del sensor al final de la banda transportadora y el sensor que mide la altura, se toma la distancia cuando el sensor de la altura deja de percibir un objeto debajo de él.
+  - **Largo**: Para la medición del largo al igual que la anchura, se tomó como medida estática la distancia del sensor al final de la banda transportadora y el sensor que mide la altura, se toma la distancia cuando el sensor de la altura deja de percibir un objeto debajo de él.
   ![Largo](./images/tech/largo.jpeg)
   ![Largo](./images/tech/largo2.jpeg)
 
-- Servo motores: Los servomotores tienen la funcionalidad de clasificar los paquetes que son identificados y medidos correctamente, por cada color existen 3 espacios de clasificación y un cuarto para el cual tiene una trayectoria recta donde se almacenan los paquetes que no fueron identificados. 
+- **Servo motores**: Los servomotores tienen la funcionalidad de clasificar los paquetes que son identificados y medidos correctamente, por cada color existen 3 espacios de clasificación y un cuarto para el cual tiene una trayectoria recta donde se almacenan los paquetes que no fueron identificados. 
 ![Servo Motores](./images/tech/servo.jpeg)
 
-- Pantalla LCD y Botones: Los botones y la pantalla LCD conectados al Arduino maestro, tienen el manejo de toda la máquina, con la ayuda de los botones se puede navegar entre las distintas opciones que muestra la pantalla LCD. 
+- **Pantalla LCD, Botones y Potenciómetro**: Los botones y la pantalla LCD conectados al Arduino maestro, tienen el manejo de toda la máquina, con la ayuda de los botones se puede navegar entre las distintas opciones que muestra la pantalla LCD. 
 ![Pantalla LCD y Botones](./images/tech/lcd.jpeg)
 
-- Puente H: Este circuito electrónico permitió controlar la dirección y velocidad de la banda transportadora, con el cambio de polaridad de sus terminales que la alimentan, permitiendo que esta pueda detenerse para medir correctamente y detectar los colores de los paquetes. 
+- **Puente H**: Este circuito electrónico permitió controlar la dirección y velocidad de la banda transportadora, con el cambio de polaridad de sus terminales que la alimentan, permitiendo que esta pueda detenerse para medir correctamente y detectar los colores de los paquetes. 
 ![Puente H](./images/tech/h.jpeg)
+
 
