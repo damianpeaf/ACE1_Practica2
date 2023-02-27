@@ -37,11 +37,11 @@ La implementación de este protocolo fue mediante el uso de dos Arduino, conecta
 ![Diagrama de clases](./images/tech/class.jpeg)
 
 # **Materiales y Herramientas**
-### Electrónicos:
+### Electrónicas:
 - Arduino UNO
 - Arduino LEONARDO
 - Switch
-- Dos push buttons
+- 2 push buttons
 - Pantalla LCD 16x2
 - 3 Sensores ultrasónicos HC-SR04
 - Sensor de color TCS230
@@ -70,12 +70,15 @@ Diseño encapsulado de la máquina transportadora de paquetes.
 - Sensor de ultrasonico: Para medir las dimensiones de la caja se utilizó 3 sensores ultrasónicos. Para obtener las medidas de cada caja se posicionó cada sensor en un lugar específico.
   - Altura: Se colocó un sensor a una distancia de 15cm a nivel de la banda transportadora, cuando detecta un objeto (paquete) obtiene la distancia a la que fue detectada, luego se resta con la altura total.
   ![Altura](./images/tech/altura.jpeg)
+  ![Altura](./images/tech/altura2.jpeg)
 
   - Ancho: Se colocó un sensor a una distancia a un centímetro del costado de la banda transportadora, cuando detecta un objeto (paquete) obtiene la distancia a la que fue detectada, luego se resta con el ancho de la banda transportadora y el centímetro.
   ![Ancho](./images/tech/ancho.jpeg)
+  ![Ancho](./images/tech/ancho2.jpeg)
 
   - Largo: Para la medición del largo al igual que la anchura, se tomó como medida estática la distancia del sensor al final de la banda transportadora y el sensor que mide la altura, se toma la distancia cuando el sensor de la altura deja de percibir un objeto debajo de él.
   ![Largo](./images/tech/largo.jpeg)
+  ![Largo](./images/tech/largo2.jpeg)
 
 - Servo motores: Los servomotores tienen la funcionalidad de clasificar los paquetes que son identificados y medidos correctamente, por cada color existen 3 espacios de clasificación y un cuarto para el cual tiene una trayectoria recta donde se almacenan los paquetes que no fueron identificados. 
 ![Servo Motores](./images/tech/servo.jpeg)
