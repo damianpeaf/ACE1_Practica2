@@ -59,7 +59,7 @@ void loop()
         int height = Wire.read();
         int length = Wire.read();
         // create a new package
-        Package package(color, width, height, length);
+        Package *package = new Package(color, width, height, length);
         // save the package in the array
         packages[count] = package;
         count++;

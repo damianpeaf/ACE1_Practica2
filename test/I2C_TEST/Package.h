@@ -8,8 +8,14 @@ class Package {
   //constructor
   Package(int color, int widht, int height, int length);
   // public methods
+  void getValues(void);
 
-  void getValues();
+  // private variables
+  private:
+  int color;
+  int width;
+  int height;
+  int length;
 
 }
 
