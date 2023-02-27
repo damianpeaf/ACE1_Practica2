@@ -1,7 +1,6 @@
 #ifndef PACKAGE_H
 #define PACKAGE_H
 
-#include <string>
 
 
 class Package {

@@ -17,7 +17,7 @@ int not_recognized_packages = 0;
 bool send_package_request = false;
 
 // ARRAY OF PACKAGES THAT ARE BEIGN SAVED  
-const int count = 0;
+int count = 0;
 const int ARRAY_SIZE = 10;
 Package packages[ARRAY_SIZE];
 
