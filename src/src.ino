@@ -226,17 +226,11 @@ void init_sequence(){
         digitalWrite(interrupt_signal_pin, LOW);
         delay(50);
     }
-
-    if(have_to_pause){
-        stop_motor();
-        while(have_to_pause){
-            delay(100);
-        }
-    }
+   
 }
 
 void loop() {
-    while(have_to_init){
+    while(have_to_init && !have_to_pause){
         move_motor();
         init_sequence();
     }
@@ -262,6 +256,7 @@ void receive_info(int howMany) {
         Serial.println("INIT/STOP");
         have_to_init = !have_to_init;
     }else if(option == 2){
+        Serial.println("PAUSE/RESUME");
         have_to_pause = !have_to_pause;
     }
 

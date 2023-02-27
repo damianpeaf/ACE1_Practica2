@@ -27,3 +27,7 @@ void Package::getValues(){
   // function to send this values to the lcd
   Serial.println("Color: " + this->color);
 }
+
+int Package::getVolume(){
+  return this->width * this->height * this->length;
+}

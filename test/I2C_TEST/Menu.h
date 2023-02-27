@@ -30,5 +30,8 @@ void initial_setup();
 void print_screen();
 bool is_right_button_pressed();
 bool is_left_button_pressed();
+void main_menu();
+void reprocess_menu();
+void initial_sequence_detection();
 
 #endif

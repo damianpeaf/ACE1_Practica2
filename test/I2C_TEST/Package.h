@@ -13,9 +13,8 @@ class Package {
 
   // public methods
   void getValues(void);
+  int getVolume(void);
 
-  // private variables
-  private:
   int color;
   int width;
   int height;

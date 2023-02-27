@@ -3,11 +3,9 @@
 
 #include "Menu.h"
 
-// PACKAGES
-const int PENDANT_PACKAGES = 0;
-
 //MAESTRO
 int not_recognized_packages = 0;
+int reprocess_stages = 0;
 
 bool send_package_request = false;
 
@@ -98,7 +96,7 @@ void manage_menu() {
       Wire.write(1); // START
       Wire.endTransmission();
 
-      print_screen("IZQ: PAUSE", "DER: END")
+      print_screen("IZQ: PAUSE", "DER: END");
 
       while(true){
 
@@ -108,13 +106,13 @@ void manage_menu() {
           Wire.write(2); // PAUSE
           Wire.endTransmission();
 
-          print_screen("IZQ: ", "CONTINUE")
+          print_screen("IZQ: ", "CONTINUE");
           while (true) {
             if (is_left_button_pressed()) {
               Wire.beginTransmission(0x01);
               Wire.write(2); // RESUME
               Wire.endTransmission();
-              print_screen("IZQ: PAUSE", "DER: END")
+              print_screen("IZQ: PAUSE", "DER: END");
               break;
             }
           }
@@ -127,7 +125,7 @@ void manage_menu() {
           Wire.beginTransmission(0x01);
           Wire.write(1); // START
           Wire.endTransmission();
-          print_screen("IZQ:", "INICIAR")
+          print_screen("IZQ:", "INICIAR");
           break;
         }
 
@@ -146,7 +144,7 @@ void main_menu(){
   
   while(true){
     if(is_left_button_pressed()){
-      print_screen("IZQ:", "INICIAR")
+      print_screen("IZQ:", "INICIAR");
       manage_menu();
     }
   }
@@ -173,6 +171,7 @@ void initial_sequence_detection(){
     }else{
       not_recognized_packages++;
       Serial.println("TOTAL PAQUETES NO RECONOCIDOS: " + String(not_recognized_packages));
+      break;
     }
 
   }
@@ -205,18 +204,94 @@ void reprocess_sequence_detection(){
 
 void reprocess_menu(){
   print_screen("Pendientes: ", String(not_recognized_packages));
+  reprocess_stages = not_recognized_packages;
+
+  Serial.println("Pendientes: "+  String(not_recognized_packages));
 
   while(not_recognized_packages > 0){
     if(send_package_request){
+      Serial.println("REPROCESANDO..........");
       reprocess_sequence_detection();
       print_screen("Pendientes: ", String(not_recognized_packages));
     }
+    delay(500);
   }
 }
 
 void statistics_menu(){
 
+  print_screen("Reprocess ", "stages: "+ String(reprocess_stages));
+
+  bool end = false;
+
+  while(!end){
+    if(is_right_button_pressed()){
+
+
+        int media = 0;
+        int packages_count = 0;
+
+
+        for (int i = 0; i < ARRAY_SIZE; i++) {
+          if(packagesArray[i].color != 0){
+            media += packagesArray[i].getVolume();
+            packages_count++;
+          }
+        }
+
+        Package packagesArrayAux [packages_count];
+        media = media / packages_count;
+
+        int mediana = 0;
+
+        // aux array
+        int auxCount = 0;
+        for (int i = 0; i < ARRAY_SIZE; i++) {
+          if(packagesArray[i].color != 0){
+            packagesArrayAux[auxCount] = packagesArray[i];
+            auxCount++;
+          }
+        }
+
+        // sort array
+
+        for (int i = 0; i < packages_count; i++) {
+          for (int j = 0; j < packages_count; j++) {
+            if(packagesArrayAux[i].getVolume() < packagesArrayAux[j].getVolume()){
+              Package aux = packagesArrayAux[i];
+              packagesArrayAux[i] = packagesArrayAux[j];
+              packagesArrayAux[j] = aux;
+            }
+          }
+        }
+
+        // get mediana
+
+        if(packages_count % 2 == 0){
+          mediana = (packagesArrayAux[packages_count/2].getVolume() + packagesArrayAux[(packages_count/2) - 1].getVolume()) / 2;
+        }else{
+          mediana = packagesArrayAux[packages_count/2].getVolume();
+        }
+
+
+        print_screen("Media: " + String(count), "Mediana: " + String(mediana));
+
+        int stage = 0;
+        while(!end){
+          if(is_right_button_pressed()){
+            if(stage == 0){
+              
+              // TODO
+
+              print_screen("INITIAL", "R: " );
+            }
+          }
+        }
+    }
+  }
+
 }
+
 
 bool is_right_button_pressed(){
 
@@ -225,6 +300,7 @@ bool is_right_button_pressed(){
   if (buttonStateRight != lastButtonStateRight && buttonStateRight == HIGH) {  // Si el estado del botón para avanzar ha cambiado
     lastButtonStateRight = buttonStateRight;
     Serial.println("BOTON DERECHO PRESIONADO");
+    delay(100);
     return true;
   }else{
     lastButtonStateRight = buttonStateRight;
@@ -238,6 +314,7 @@ bool is_left_button_pressed(){
 
   if (buttonStateLeft != lastButtonStateLeft && buttonStateLeft == HIGH) {  // Si el estado del botón para avanzar ha cambiado
     lastButtonStateLeft = buttonStateLeft;
+    delay(100);
     Serial.println("BOTON IZQUIERDO PRESIONADO");
     return true;
   }else{
