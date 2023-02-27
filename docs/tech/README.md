@@ -45,10 +45,10 @@ La implementación de este protocolo fue mediante el uso de dos Arduino, conecta
 
 - Sensor de movimiento: Para medir las dimensiones de la caja se utilizó 3 sensores ultrasónicos. Para obtener las medidas de cada caja se posicionó cada sensor en un lugar específico.
 - - Altura: Se colocó un sensor a una distancia de 15cm a nivel de la banda transportadora, cuando detecta un objeto (paquete) obtiene la distancia a la que fue detectada, luego se resta con la altura total.
-![Sensor de color](./images/tech/altura.jpg)
+![Sensor de color](./images/tech/altura.jpeg)
 
 - - Ancho: Se colocó un sensor a una distancia a un centímetro del costado de la banda transportadora, cuando detecta un objeto (paquete) obtiene la distancia a la que fue detectada, luego se resta con el ancho de la banda transportadora y el centímetro.
-![Sensor de color](./images/tech/ancho.jpg)
+![Sensor de color](./images/tech/ancho.jpeg)
 
 - - Largo: Para la medición del largo al igual que la anchura, se tomó como medida estática la distancia del sensor al final de la banda transportadora y el sensor que mide la altura, se toma la distancia cuando el sensor de la altura deja de percibir un objeto debajo de él.
-![Sensor de color](./images/tech/largo.jpg)
+![Sensor de color](./images/tech/largo.jpeg)
