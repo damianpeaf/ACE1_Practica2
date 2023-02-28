@@ -110,14 +110,11 @@ void init_sequence(){
         Serial.println("POSSIBLE PACKAGE");   
     }
 
-    if(posible_package_count_right >= 4){
+    if(posible_package_count_right >= 3){
         posible_package_count_right = 0;
         Serial.println("OBJECT DETECTED");
 
         // Package aligment
-        package_aligment_time = millis();
-        move_motor();
-        while (millis() - package_aligment_time <  80) {}
         stop_motor();
         right_distance = get_right_distance();
 
@@ -220,7 +217,7 @@ void init_sequence(){
         Serial.println("END OF SEQUENCE");
     }
 
-    delay(100);
+    delay(80);
 
     // Send interrupt signal
     if(have_to_send){
